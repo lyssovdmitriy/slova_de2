@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Multi-page template</title>
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css"/>
+    <link rel="stylesheet" href="css/jquery.mobile.theme-1.4.5.min.css"/>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/words200.js"></script>
+</head>
+
+
+<body>
+
+<!-- Start of first page: #one -->
+<div data-role="page" id="one" data-theme="b">
+
+    <div data-role="header">
+        <h1>Повторялка</h1>
+    </div><!-- /header -->
+
+    <div data-role="content">
+        <p><a href="#base200" data-role="button" id="word200de">Базовые 200 шт с немецкого</a></p>
+        <p><a href="#base200" data-role="button" id="word200ru">Базовые 200 шт с русского</a></p>
+    </div><!-- /content -->
+
+    <!--    <div data-role="footer">-->
+    <!--        <h4>Page Footer</h4>-->
+    <!--    </div>&lt;!&ndash; /footer &ndash;&gt;-->
+</div><!-- /page one -->
+
+
+<!-- Start of second page: #two -->
+<div data-role="page" id="base200" data-theme="b">
+
+    <div data-role="header">
+        <h1>200 базовых слов</h1>
+    </div><!-- /header -->
+
+    <div data-role="content">
+        <h3 id="word" style="text-transform: capitalize"></h3>
+        <div class="ui-grid">
+            <div class="btn-block">
+            </div>
+            <div class="btn-block">
+            </div>
+            <div class="btn-block">
+            </div>
+            <div class="btn-block">
+            </div>
+        </div>
+
+        <div class="ui-grid" style="margin-top:100px;">
+            <div class="ui-block-a">
+                <a href="#one" data-rel="#one" data-role="button" data-inline="true" data-icon="back">Главное меню</a>
+            </div>
+            <div class="ui-block-b">
+                <div class="button-wrap">
+                    <button class="ui-btn ui-btn-icon-left ui-icon-arrow-r ui-corner-all" id="next-word">Следующее
+                        слово
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /content -->
+
+    <!--    <div data-role="footer">-->
+    <!--        <h4>Page Footer</h4>-->
+    <!--    </div>&lt;!&ndash; /footer &ndash;&gt;-->
+    <script>
+        $(document).ready(function () {
+            $('#word200de').click(function () {
+                startWord200('de');
+            });
+
+            $('#word200ru').click(function () {
+                startWord200('ru');
+            });
+
+            function startWord200(lang) {
+                let word;
+                $('#next-word').prop('lang', lang);
+                if(lang == 'de'){
+                    word = getWordDe();
+                } else if(lang == 'ru') {
+                    word = getWordRu();
+                }
+                $('#word').html(word.word);
+                $('.btn-block').each(function (id) {
+                    if (word.options[id] == word.answer) {
+                        $(this).html('<div class="button-wrap"><button class="ui-btn answer-btn is-answer ui-corner-all">' + word.options[id] + '</button></div>')
+                    } else {
+                        $(this).html('<div class="button-wrap"><button class="ui-btn answer-btn ui-corner-all">' + word.options[id] + '</button></div>')
+                    }
+                });
+                $('.answer-btn').click(function () {
+                    if ($(this).hasClass('is-answer')) {
+                        $(this).addClass('ui-icon-check ui-btn-icon-left');
+                    } else {
+                        $(this).addClass('ui-icon-delete ui-btn-icon-left');
+                    }
+
+                })
+            }
+
+            $('#next-word').click(function () {
+                startWord200($(this).prop('lang'));
+            })
+
+        });
+    </script>
+
+</div><!-- /page two -->
+
+</body>
+</html>
