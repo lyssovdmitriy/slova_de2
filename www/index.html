@@ -23,8 +23,25 @@
     </div><!-- /header -->
 
     <div data-role="content">
-        <p><a href="#base200" data-role="button" id="word200de">Базовые 200 шт с немецкого</a></p>
-        <p><a href="#base200" data-role="button" id="word200ru">Базовые 200 шт с русского</a></p>
+        <p>
+            <button
+                    id="update-from-server"
+                    class="show-page-loading-msg"
+                    data-theme="b"
+                    data-role="button"
+                    data-textonly="false"
+                    data-textvisible="true"
+                    data-msgtext="Обновление"
+                    data-inline="true"
+                    style="display: block; width: 100%"
+            >обновить список с сервера
+            </button>
+        </p>
+
+        <p><a href="#base200" data-role="button" id="word200de">Тест с немецкого</a></p>
+        <p><a href="#base200" data-role="button" id="word200ru">Тест с русского</a></p>
+        <p><a href="#wl" data-role="button" id="list-button-ru">Список слов RU</a></p>
+        <p><a href="#wl" data-role="button" id="list-button-de">Список слов DE</a></p>
     </div><!-- /content -->
 
     <!--    <div data-role="footer">-->
@@ -37,7 +54,7 @@
 <div data-role="page" id="base200" data-theme="b">
 
     <div data-role="header">
-        <h1>200 базовых слов</h1>
+        <h1>Повторение</h1>
     </div><!-- /header -->
 
     <div data-role="content">
@@ -67,52 +84,146 @@
         </div>
 
     </div><!-- /content -->
+</div>
+<!-- Start of first page: #one -->
+<div data-role="page" id="wl" data-theme="b">
+
+    <div data-role="header">
+        <a href="#one" data-rel="#one" data-role="button" data-inline="true" class="ui-btn ui-icon-back ui-btn-icon-notext ui-corner-all"></a>
+        <h1>список слов</h1>
+    </div><!-- /header -->
+
+    <div data-role="content">
+        <ul id="word-list-ul"  data-role="listview"></ul>
+    </div><!-- /content -->
 
     <!--    <div data-role="footer">-->
     <!--        <h4>Page Footer</h4>-->
     <!--    </div>&lt;!&ndash; /footer &ndash;&gt;-->
-    <script>
-        $(document).ready(function () {
-            $('#word200de').click(function () {
-                startWord200('de');
-            });
+</div><!-- /page one -->
 
-            $('#word200ru').click(function () {
-                startWord200('ru');
-            });
+<!--    <div data-role="footer">-->
+<!--        <h4>Page Footer</h4>-->
+<!--    </div>&lt;!&ndash; /footer &ndash;&gt;-->
 
-            function startWord200(lang) {
-                let word;
-                $('#next-word').prop('lang', lang);
-                if(lang == 'de'){
-                    word = getWordDe();
-                } else if(lang == 'ru') {
-                    word = getWordRu();
-                }
-                $('#word').html(word.word);
-                $('.btn-block').each(function (id) {
-                    if (word.options[id] == word.answer) {
-                        $(this).html('<div class="button-wrap"><button class="ui-btn answer-btn is-answer ui-corner-all">' + word.options[id] + '</button></div>')
-                    } else {
-                        $(this).html('<div class="button-wrap"><button class="ui-btn answer-btn ui-corner-all">' + word.options[id] + '</button></div>')
-                    }
-                });
-                $('.answer-btn').click(function () {
-                    if ($(this).hasClass('is-answer')) {
-                        $(this).addClass('ui-icon-check ui-btn-icon-left');
-                    } else {
-                        $(this).addClass('ui-icon-delete ui-btn-icon-left');
-                    }
+<style>
+    .title{
+        font-size: larger;
+        font-weight: bolder;
+        text-align: center;
+        margin-top: 25px;
+        color: white;
+    }
 
-                })
-            }
+    .description{
+        color: darkgray;
+        text-align: center;
+        margin-top: 5px;
+        display: none;
+    }
 
-            $('#next-word').click(function () {
-                startWord200($(this).prop('lang'));
-            })
+    .list-container{
+        border-bottom: 1px solid #444;
+        padding-bottom: 20px;
+        transition: all 2s;
+    }
+</style>
 
+<script>
+    $(document).ready(function () {
+        $('#word200de').click(function () {
+            startWord200('de');
         });
-    </script>
+
+        $('#word200ru').click(function () {
+            startWord200('ru');
+        });
+
+        function startWord200(lang) {
+            let word;
+            $('#next-word').prop('lang', lang);
+            if (lang == 'de') {
+                word = getWordDe();
+            } else if (lang == 'ru') {
+                word = getWordRu();
+            }
+            $('#word').html(word.word);
+            $('.btn-block').each(function (id) {
+                if (word.options[id] == word.answer) {
+                    $(this).html('<div class="button-wrap"><button class="ui-btn answer-btn is-answer ui-corner-all">' + word.options[id] + '</button></div>')
+                } else {
+                    $(this).html('<div class="button-wrap"><button class="ui-btn answer-btn ui-corner-all">' + word.options[id] + '</button></div>')
+                }
+            });
+            $('.answer-btn').click(function () {
+                if ($(this).hasClass('is-answer')) {
+                    $(this).addClass('ui-icon-check ui-btn-icon-left');
+                } else {
+                    $(this).addClass('ui-icon-delete ui-btn-icon-left');
+                }
+
+            })
+        }
+
+        $('#next-word').click(function () {
+            startWord200($(this).prop('lang'));
+        });
+
+        $('#list-button-ru').click(function(){
+            $('#word-list-ul').html('');
+            for(let i in words){
+                $('#word-list-ul').append(
+                    '<div class="list-container"><div class="title">' +
+                    words[i].ru +
+                    '</div><div class="description">' +
+                    words[i].de +
+                    '</div></div>'
+                );
+            }
+            init();
+        });
+
+        $('#list-button-de').click(function(){
+            $('#word-list-ul').html('');
+            for(let i in words){
+                $('#word-list-ul').append(
+                    '<div class="list-container"><div class="title">' +
+                    words[i].de +
+                    '</div><div class="description">' +
+                    words[i].ru +
+                    '</div></div>'
+                );
+            }
+            init();
+        });
+
+        function init(){
+            $('.list-container').click(function(){
+                $(this).find(".description").fadeToggle();
+            });
+        }
+
+        $('#update-from-server').click(function(){
+            let $this = $( this ),
+                theme = $this.jqmData( "theme" ) || $.mobile.loader.prototype.options.theme,
+                msgText = $this.jqmData( "msgtext" ) || $.mobile.loader.prototype.options.text,
+                textVisible = $this.jqmData( "textvisible" ) || $.mobile.loader.prototype.options.textVisible,
+                textonly = !!$this.jqmData( "textonly" ),
+                html = $this.jqmData( "html" ) || "";
+            $.mobile.loading( "show", {
+                text: msgText,
+                textVisible: textVisible,
+                theme: theme,
+                textonly: textonly,
+                html: html
+            });
+            updateFromServer(function(){
+                $.mobile.loading( "hide" );
+            });
+        });
+
+    });
+</script>
 
 </div><!-- /page two -->
 

@@ -201,12 +201,38 @@ let words200 = [
     {"de": "die Tomate", "ru": "помидор"}
 ];
 
+let loading = true;
+let words = words200;
+
+function setWordsStorage(){
+    localStorage.setItem('words', JSON.stringify(words));
+}
+
+function getWordsStorage(){
+    words = JSON.parse(localStorage.getItem('words'));
+}
+
+
+function updateFromServer(func){
+    fetch('https://lyssovdmitriy.github.io/deutsch_words/words.html').then(function(response){
+        let promise = response.json();
+        promise.then(function(data){
+            words = data;
+            setWordsStorage();
+            func();
+        })
+
+    });
+}
+
+
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
 function getRandomWord(){
-    return words200[getRandomInt(0,199)];
+    getWordsStorage();
+    return words[getRandomInt(0,words.length - 1)];
 }
 
 function getWordDe(){
