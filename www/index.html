@@ -23,25 +23,26 @@
     </div><!-- /header -->
 
     <div data-role="content">
-        <p>
-            <button
-                    id="update-from-server"
-                    class="show-page-loading-msg"
-                    data-theme="b"
-                    data-role="button"
-                    data-textonly="false"
-                    data-textvisible="true"
-                    data-msgtext="Обновление"
-                    data-inline="true"
-                    style="display: block; width: 100%"
-            >обновить список с сервера
-            </button>
-        </p>
+<!--        <p>-->
+<!--            <button-->
+<!--                    id="update-from-server"-->
+<!--                    class="show-page-loading-msg"-->
+<!--                    data-theme="b"-->
+<!--                    data-role="button"-->
+<!--                    data-textonly="false"-->
+<!--                    data-textvisible="true"-->
+<!--                    data-msgtext="Обновление"-->
+<!--                    data-inline="true"-->
+<!--                    style="display: block; width: 100%"-->
+<!--            >обновить список с сервера-->
+<!--            </button>-->
+<!--        </p>-->
 
         <p><a href="#base200" data-role="button" id="word200de">Тест с немецкого</a></p>
         <p><a href="#base200" data-role="button" id="word200ru">Тест с русского</a></p>
         <p><a href="#wl" data-role="button" id="list-button-ru">Список слов RU</a></p>
         <p><a href="#wl" data-role="button" id="list-button-de">Список слов DE</a></p>
+        <p class="console"></p>
     </div><!-- /content -->
 
     <!--    <div data-role="footer">-->
@@ -203,24 +204,25 @@
             });
         }
 
-        $('#update-from-server').click(function(){
-            let $this = $( this ),
-                theme = $this.jqmData( "theme" ) || $.mobile.loader.prototype.options.theme,
-                msgText = $this.jqmData( "msgtext" ) || $.mobile.loader.prototype.options.text,
-                textVisible = $this.jqmData( "textvisible" ) || $.mobile.loader.prototype.options.textVisible,
-                textonly = !!$this.jqmData( "textonly" ),
-                html = $this.jqmData( "html" ) || "";
-            $.mobile.loading( "show", {
-                text: msgText,
-                textVisible: textVisible,
-                theme: theme,
-                textonly: textonly,
-                html: html
-            });
-            updateFromServer(function(){
-                $.mobile.loading( "hide" );
-            });
-        });
+        // $('#update-from-server').click(function(){
+        //     let $this = $( this ),
+        //         theme = $this.jqmData( "theme" ) || $.mobile.loader.prototype.options.theme,
+        //         msgText = $this.jqmData( "msgtext" ) || $.mobile.loader.prototype.options.text,
+        //         textVisible = $this.jqmData( "textvisible" ) || $.mobile.loader.prototype.options.textVisible,
+        //         textonly = !!$this.jqmData( "textonly" ),
+        //         html = $this.jqmData( "html" ) || "";
+        //     $.mobile.loading( "show", {
+        //         text: msgText,
+        //         textVisible: textVisible,
+        //         theme: theme,
+        //         textonly: textonly,
+        //         html: html
+        //     });
+        //     updateFromServer(function(){
+        //         $.mobile.loading( "hide" );
+        //     });
+        // });
+
 
     });
 </script>
