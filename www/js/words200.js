@@ -219,11 +219,15 @@ function updateFromServer(func){
         promise.then(function(data){
             words = data;
             setWordsStorage();
-            func();
+            if(func !== null){
+                func();
+            }
         })
 
     });
 }
+
+updateFromServer();
 
 
 function getRandomInt(min, max) {
